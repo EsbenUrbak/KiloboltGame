@@ -6,9 +6,11 @@ public class Enemy {
 	private Background bg = StartingClass.getBg1();
 
 	// Behavioral Methods
+	// Behavioral Methods
 	public void update() {
 		centerX += speedX;
-		speedX = bg.getSpeedX();
+		speedX = bg.getSpeedX() * 5;
+
 	}
 
 	public void die() {

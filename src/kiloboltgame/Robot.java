@@ -38,8 +38,8 @@ public class Robot {
 			centerX += speedX;
 		}
 		if (speedX > 0 && centerX > 200) {
-			bg1.setSpeedX(-MOVESPEED);
-			bg2.setSpeedX(-MOVESPEED);
+			bg1.setSpeedX(-MOVESPEED / 5);
+			bg2.setSpeedX(-MOVESPEED / 5);
 		}
 
 		// Updates Y Position
@@ -179,7 +179,7 @@ public class Robot {
 	public void setMovingLeft(boolean movingLeft) {
 		this.movingLeft = movingLeft;
 	}
-	
+
 	public ArrayList getProjectiles() {
 		return projectiles;
 	}
