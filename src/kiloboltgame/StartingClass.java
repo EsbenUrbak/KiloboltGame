@@ -17,18 +17,19 @@ import kiloboltgame.framework.Animation;
 
 public class StartingClass extends Applet implements Runnable, KeyListener {
 
-	private Robot robot;
+	private static Robot robot;
 	private Heliboy hb, hb2;
-	private Image image, currentSprite, character, character2, character3, characterDown,
-	characterJumped, background, heliboy, heliboy2, heliboy3, heliboy4, heliboy5;
-	public static Image tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight, tiledirt;
+	private Image image, currentSprite, character, character2, character3,
+			characterDown, characterJumped, background, heliboy, heliboy2,
+			heliboy3, heliboy4, heliboy5;
+	public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
+			tilegrassRight, tiledirt;
 	private Graphics second;
 	private URL base;
 	private static Background bg1, bg2;
 	private Animation anim, hanim;
 	private ArrayList<Tile> tilearray = new ArrayList<Tile>();
-	
-	
+
 	public void init() {
 		setSize(800, 480);
 		setBackground(Color.BLACK);
@@ -47,21 +48,21 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		character = getImage(base, "data/character.png");
 		character2 = getImage(base, "data/character2.png");
 		character3 = getImage(base, "data/character3.png");
-		
+
 		characterDown = getImage(base, "data/down.png");
 		characterJumped = getImage(base, "data/jumped.png");
-		
+
 		heliboy = getImage(base, "data/heliboy.png");
 		heliboy2 = getImage(base, "data/heliboy2.png");
 		heliboy3 = getImage(base, "data/heliboy3.png");
 		heliboy4 = getImage(base, "data/heliboy4.png");
 		heliboy5 = getImage(base, "data/heliboy5.png");
 
-        tiledirt = getImage(base, "data/tiledirt.png");
-        tilegrassTop = getImage(base, "data/tilegrasstop.png");
-        tilegrassBot = getImage(base, "data/tilegrassbot.png");
-        tilegrassLeft = getImage(base, "data/tilegrassleft.png");
-        tilegrassRight = getImage(base, "data/tilegrassright.png");
+		tiledirt = getImage(base, "data/tiledirt.png");
+		tilegrassTop = getImage(base, "data/tilegrasstop.png");
+		tilegrassBot = getImage(base, "data/tilegrassbot.png");
+		tilegrassLeft = getImage(base, "data/tilegrassleft.png");
+		tilegrassRight = getImage(base, "data/tilegrassright.png");
 
 		background = getImage(base, "data/background.png");
 
@@ -70,7 +71,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		anim.addFrame(character2, 50);
 		anim.addFrame(character3, 50);
 		anim.addFrame(character2, 50);
-		
+
 		hanim = new Animation();
 		hanim.addFrame(heliboy, 100);
 		hanim.addFrame(heliboy2, 100);
@@ -80,7 +81,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		hanim.addFrame(heliboy4, 100);
 		hanim.addFrame(heliboy3, 100);
 		hanim.addFrame(heliboy2, 100);
-		
+
 		currentSprite = anim.getImage();
 
 	}
@@ -88,17 +89,16 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void start() {
 		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		
-		// Initialize Tiles
-        try {
-            loadMap("data/map1.txt");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-		
 		robot = new Robot();
+
+		// Initialize Tiles
+		try {
+			loadMap("data/map1.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		hb = new Heliboy(340, 360);
 		hb2 = new Heliboy(700, 360);
 		Thread thread = new Thread(this);
@@ -106,42 +106,42 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	}
 
 	private void loadMap(String filename) throws IOException {
-		  ArrayList lines = new ArrayList();
-	        int width = 0;
-	        int height = 0;
+		ArrayList lines = new ArrayList();
+		int width = 0;
+		int height = 0;
 
-	        BufferedReader reader = new BufferedReader(new FileReader(filename));
-	        while (true) {
-	            String line = reader.readLine();
-	            // no more lines to read
-	            if (line == null) {
-	                reader.close();
-	                break;
-	            }
+		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		while (true) {
+			String line = reader.readLine();
+			// no more lines to read
+			if (line == null) {
+				reader.close();
+				break;
+			}
 
-	            if (!line.startsWith("!")) {
-	                lines.add(line);
-	                width = Math.max(width, line.length());
+			if (!line.startsWith("!")) {
+				lines.add(line);
+				width = Math.max(width, line.length());
 
-	            }
-	        }
-	        height = lines.size();
+			}
+		}
+		height = lines.size();
 
-	        for (int j = 0; j < 12; j++) {
-	            String line = (String) lines.get(j);
-	            for (int i = 0; i < width; i++) {
-	                System.out.println(i + "is i ");
+		for (int j = 0; j < 12; j++) {
+			String line = (String) lines.get(j);
+			for (int i = 0; i < width; i++) {
+				System.out.println(i + "is i ");
 
-	                if (i < line.length()) {
-	                    char ch = line.charAt(i);
-	                    Tile t = new Tile(i, j, Character.getNumericValue(ch));
-	                    tilearray.add(t);
-	                }
+				if (i < line.length()) {
+					char ch = line.charAt(i);
+					Tile t = new Tile(i, j, Character.getNumericValue(ch));
+					tilearray.add(t);
+				}
 
-	            }
-	        }
+			}
+		}
 
-	    }
+	}
 
 	public void stop() {
 
@@ -177,7 +177,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			hb2.update();
 			bg1.update();
 			bg2.update();
-			
+
 			animate();
 			repaint();
 
@@ -217,12 +217,14 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			g.setColor(Color.YELLOW);
 			g.fillRect(p.getX(), p.getY(), 10, 5);
 		}
-		g.drawImage(currentSprite, robot.getCenterX() - 61,
-				robot.getCenterY() - 63, this);
-		g.drawImage(hanim.getImage(), hb.getCenterX() - 48, hb.getCenterY() - 48, this);
-		g.drawImage(hanim.getImage(), hb2.getCenterX() - 48, hb2.getCenterY() - 48, this);
+		g.drawImage(currentSprite, robot.getCenterX() - 61,robot.getCenterY() - 63, this);
+		g.drawRect((int)robot.rect.getX(), (int)robot.rect.getY(), (int)robot.rect.getWidth(), (int)robot.rect.getHeight());
+		g.drawRect((int)robot.rect2.getX(), (int)robot.rect2.getY(), (int)robot.rect2.getWidth(), (int)robot.rect2.getHeight());
+		g.drawImage(hanim.getImage(), hb.getCenterX() - 48,hb.getCenterY() - 48, this);
+		g.drawImage(hanim.getImage(), hb2.getCenterX() - 48,hb2.getCenterY() - 48, this);
 
 	}
+
 	private void updateTiles() {
 
 		for (int i = 0; i < tilearray.size(); i++) {
@@ -230,9 +232,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			t.update();
 		}
 
-
 	}
-
 
 	private void paintTiles(Graphics g) {
 		for (int i = 0; i < tilearray.size(); i++) {
@@ -240,11 +240,11 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			g.drawImage(t.getTileImage(), t.getTileX(), t.getTileY(), this);
 		}
 	}
-	
+
 	public void animate() {
-		   anim.update(10);
-		   hanim.update(50);
-		}
+		anim.update(10);
+		hanim.update(50);
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -276,6 +276,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		case KeyEvent.VK_CONTROL:
 			if (robot.isDucked() == false && robot.isJumped() == false) {
 				robot.shoot();
+				robot.setReadyToFire(false);
 			}
 			break;
 
@@ -306,6 +307,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		case KeyEvent.VK_SPACE:
 			break;
 
+		case KeyEvent.VK_CONTROL:
+			robot.setReadyToFire(true);
+			break;
+
 		}
 
 	}
@@ -322,5 +327,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
 	public static Background getBg2() {
 		return bg2;
+	}
+
+	public static Robot getRobot() {
+		return robot;
 	}
 }
