@@ -39,14 +39,41 @@ public class Tile {
 	}
 
 	public void checkVerticalCollision(Rectangle rtop, Rectangle rbot) {
-		if (rtop.intersects(r)) {
-			System.out.println("upper collision");
-		}
+	       if (rtop.intersects(r)) {
+	           
+	        }
 
-		if (rbot.intersects(r)) {
-			System.out.println("lower collision");
-		}
-	}
+	        if (rbot.intersects(r) && type == 8) {
+	            robot.setJumped(false);
+	            robot.setSpeedY(0);
+	            robot.setCenterY(tileY - 63);
+	        }
+	    }
+	
+    public void checkSideCollision(Rectangle rleft, Rectangle rright, Rectangle leftfoot, Rectangle rightfoot) {
+        if (type != 5 && type != 2 && type != 0){
+            if (rleft.intersects(r)) {
+                robot.setCenterX(tileX + 102);
+   
+                robot.setSpeedX(0);
+   
+            }else if (leftfoot.intersects(r)) {
+                robot.setCenterX(tileX + 85);
+                robot.setSpeedX(0);
+            }
+           
+            if (rright.intersects(r)) {
+                robot.setCenterX(tileX - 62);
+   
+                robot.setSpeedX(0);
+            }
+           
+            else if (rightfoot.intersects(r)) {
+                robot.setCenterX(tileX - 45);
+                robot.setSpeedX(0);
+            }
+        }
+    }
 
 	public void update() {
 		speedX = bg.getSpeedX() * 5;

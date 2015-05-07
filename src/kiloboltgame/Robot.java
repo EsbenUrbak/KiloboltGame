@@ -58,7 +58,9 @@ public class Robot {
 		// Handles Jumping
 		if (jumped == true) {
 			speedY += 1;
-
+			
+			if (speedY > 3){
+				jumped = true;
 
 		}
 
