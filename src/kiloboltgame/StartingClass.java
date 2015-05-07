@@ -1,15 +1,19 @@
 package kiloboltgame;
 
 import java.applet.Applet;
-import kiloboltgame.framework.Animation;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import kiloboltgame.framework.Animation;
 
 public class StartingClass extends Applet implements Runnable, KeyListener {
 
@@ -17,7 +21,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	private Heliboy hb, hb2;
 	private Image image, currentSprite, character, character2, character3, characterDown,
 	characterJumped, background, heliboy, heliboy2, heliboy3, heliboy4, heliboy5;
-	public static Image tiledirt, tileocean;
+	public static Image tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight, tiledirt;
 	private Graphics second;
 	private URL base;
 	private static Background bg1, bg2;
@@ -53,8 +57,11 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		heliboy4 = getImage(base, "data/heliboy4.png");
 		heliboy5 = getImage(base, "data/heliboy5.png");
 
-		tiledirt = getImage(base, "data/tiledirt.png");
-		tileocean = getImage(base, "data/tileocean.png");
+        tiledirt = getImage(base, "data/tiledirt.png");
+        tilegrassTop = getImage(base, "data/tilegrasstop.png");
+        tilegrassBot = getImage(base, "data/tilegrassbot.png");
+        tilegrassLeft = getImage(base, "data/tilegrassleft.png");
+        tilegrassRight = getImage(base, "data/tilegrassright.png");
 
 		background = getImage(base, "data/background.png");
 
@@ -81,22 +88,15 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void start() {
 		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
+		
 		// Initialize Tiles
+        try {
+            loadMap("data/map1.txt");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-		for (int i = 0; i < 200; i++) {
-			for (int j = 0; j < 12; j++) {
-
-				if (j == 11) {
-					Tile t = new Tile(i, j, 2);
-					tilearray.add(t);
-
-				} if (j == 10) {
-					Tile t = new Tile(i, j, 1);
-					tilearray.add(t);
-
-				}
-			}
-		}
 		
 		robot = new Robot();
 		hb = new Heliboy(340, 360);
@@ -104,6 +104,44 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		Thread thread = new Thread(this);
 		thread.start();
 	}
+
+	private void loadMap(String filename) throws IOException {
+		  ArrayList lines = new ArrayList();
+	        int width = 0;
+	        int height = 0;
+
+	        BufferedReader reader = new BufferedReader(new FileReader(filename));
+	        while (true) {
+	            String line = reader.readLine();
+	            // no more lines to read
+	            if (line == null) {
+	                reader.close();
+	                break;
+	            }
+
+	            if (!line.startsWith("!")) {
+	                lines.add(line);
+	                width = Math.max(width, line.length());
+
+	            }
+	        }
+	        height = lines.size();
+
+	        for (int j = 0; j < 12; j++) {
+	            String line = (String) lines.get(j);
+	            for (int i = 0; i < width; i++) {
+	                System.out.println(i + "is i ");
+
+	                if (i < line.length()) {
+	                    char ch = line.charAt(i);
+	                    Tile t = new Tile(i, j, Character.getNumericValue(ch));
+	                    tilearray.add(t);
+	                }
+
+	            }
+	        }
+
+	    }
 
 	public void stop() {
 
